@@ -6,12 +6,6 @@
  */
 (function(){this["Handlebars"] = this["Handlebars"] || {};
 this["Handlebars"]["templates"] = this["Handlebars"]["templates"] || {};
-this["Handlebars"]["templates"]["apikey_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "<!--div class='auth_button' id='apikey_button'><img class='auth_icon' alt='apply api key' src='images/apikey.jpeg'></div-->\n<div class='auth_container' id='apikey_container'>\n  <div class='key_input_container'>\n    <div class='auth_label'>"
-    + escapeExpression(((helper = (helper = helpers.keyName || (depth0 != null ? depth0.keyName : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"keyName","hash":{},"data":data}) : helper)))
-    + "</div>\n    <input placeholder=\"api_key\" class=\"auth_input\" id=\"input_apiKey_entry\" name=\"apiKey\" type=\"text\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_api_key\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
-},"useData":true});
 this["Handlebars"]["templates"]["basic_auth_button_view"] = Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   return "<div class='auth_button' id='basic_auth_button'><img class='auth_icon' src='images/password.jpeg'></div>\n<div class='auth_container' id='basic_auth_container'>\n  <div class='key_input_container'>\n    <div class=\"auth_label\">Username</div>\n    <input placeholder=\"username\" class=\"auth_input\" id=\"input_username\" name=\"username\" type=\"text\"/>\n    <div class=\"auth_label\">Password</div>\n    <input placeholder=\"password\" class=\"auth_input\" id=\"input_password\" name=\"password\" type=\"password\"/>\n    <div class='auth_submit'><a class='auth_submit_button' id=\"apply_basic_auth\" href=\"#\">apply</a></div>\n  </div>\n</div>\n\n";
   },"useData":true});
@@ -311,17 +305,6 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
   return "    , <span style=\"font-variant: small-caps\">api version</span>: "
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), depth0))
     + "\n    ";
-},"16":function(depth0,helpers,partials,data) {
-  var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
-  return "    <span style=\"float:right\"><a href=\""
-    + escapeExpression(((helper = (helper = helpers.validatorUrl || (depth0 != null ? depth0.validatorUrl : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"validatorUrl","hash":{},"data":data}) : helper)))
-    + "/debug?url="
-    + escapeExpression(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"url","hash":{},"data":data}) : helper)))
-    + "\"><img id=\"validator\" src=\""
-    + escapeExpression(((helper = (helper = helpers.validatorUrl || (depth0 != null ? depth0.validatorUrl : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"validatorUrl","hash":{},"data":data}) : helper)))
-    + "?url="
-    + escapeExpression(((helper = (helper = helpers.url || (depth0 != null ? depth0.url : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"url","hash":{},"data":data}) : helper)))
-    + "\"></a>\n    </span>\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div class='info' id='api_info'>\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.info : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
@@ -331,10 +314,7 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
     + "\n";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), {"name":"if","hash":{},"fn":this.program(14, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  buffer += "]\n";
-  stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.validatorUrl : depth0), {"name":"if","hash":{},"fn":this.program(16, data),"inverse":this.noop,"data":data});
-  if (stack1 != null) { buffer += stack1; }
-  return buffer + "    </h4>\n    </div>\n</div>\n";
+  return buffer + "]\n    </h4>\n    </div>\n</div>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   return "deprecated";
@@ -20252,7 +20232,6 @@ window.SwaggerUi = Backbone.Router.extend({
     // Create view to handle the header inputs
     this.headerView = new SwaggerUi.Views.HeaderView({el: $('#header')});
 
-    // Event handler for when the baseUrl/apiKey is entered by user
     this.headerView.on('update-swagger-ui', function(data) {
       return that.updateSwaggerUi(data);
     });
@@ -20414,11 +20393,6 @@ window.SwaggerUi.Views = {};
     }
   };
 
-  window.ApiKeyAuthorization = function() {
-    warn('window.ApiKeyAuthorization is deprecated. Please use SwaggerClient.ApiKeyAuthorization.');
-    SwaggerClient.ApiKeyAuthorization.apply(window, arguments);
-  };
-
   window.PasswordAuthorization = function() {
     warn('window.PasswordAuthorization is deprecated. Please use SwaggerClient.PasswordAuthorization.');
     SwaggerClient.PasswordAuthorization.apply(window, arguments);
@@ -20451,60 +20425,6 @@ window.SwaggerUi.Views = {};
 }(this, function () {
     return SwaggerUi;
 }));
-'use strict';
-
-SwaggerUi.Views.ApiKeyButton = Backbone.View.extend({ // TODO: append this to global SwaggerUi
-
-  events:{
-    'click #apikey_button' : 'toggleApiKeyContainer',
-    'click #apply_api_key' : 'applyApiKey'
-  },
-
-  initialize: function(opts){
-    this.options = opts || {};
-    this.router = this.options.router;
-  },
-
-  render: function(){
-    var template = this.template();
-    $(this.el).html(template(this.model));
-
-    return this;
-  },
-
-
-  applyApiKey: function(){
-    var keyAuth = new SwaggerClient.ApiKeyAuthorization(
-      this.model.name,
-      $('#input_apiKey_entry').val(),
-      this.model.in
-    );
-    this.router.api.clientAuthorizations.add(this.model.name, keyAuth);
-    this.router.load();
-    $('#apikey_container').show();
-  },
-
-  toggleApiKeyContainer: function(){
-    if ($('#apikey_container').length) {
-
-      var elem = $('#apikey_container').first();
-
-      if (elem.is(':visible')){
-        elem.hide();
-      } else {
-
-        // hide others
-        $('.auth_container').hide();
-        elem.show();
-      }
-    }
-  },
-
-  template: function(){
-    return Handlebars.templates.apikey_button_view;
-  }
-
-});
 'use strict';
 
 SwaggerUi.Views.BasicAuthButton = Backbone.View.extend({
@@ -20573,12 +20493,11 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
   events: {
     'click #show-pet-store-icon'    : 'showPetStore',
     'click #show-wordnik-dev-icon'  : 'showWordnikDev',
-    'click #explore'                : 'showCustom',
-    'keyup #input_baseUrl'          : 'showCustomOnKeyup',
-    'keyup #input_apiKey'           : 'showCustomOnKeyup'
+    'change #input_baseUrl'         : 'loadDefinition'
   },
 
-  initialize: function(){},
+  initialize: function(){
+  },
 
   showPetStore: function(){
     this.trigger('update-swagger-ui', {
@@ -20592,20 +20511,17 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
     });
   },
 
-  showCustomOnKeyup: function(e){
-    if (e.keyCode === 13) {
-      this.showCustom();
-    }
-  },
-
-  showCustom: function(e){
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.trigger('update-swagger-ui', {
-      url: $('#input_baseUrl').val(),
-      apiKey: $('#input_apiKey').val()
+  loadDefinition: function(e) {
+    var app_id = $(e.target).children(':selected').val(),
+        self = this;
+    $.getJSON(TWINTIP_BASE_URL + '/apis/' + app_id, function(def) {
+      var swaggerUrl = '/swagger.json';
+      $.getJSON(KIO_BASE_URL + '/apps/' + app_id, function(app) {
+        console.log(self);
+        self.trigger('update-swagger-ui', {
+          url: app.service_url + swaggerUrl
+        });
+      });
     });
   },
 
@@ -20614,9 +20530,6 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
       trigger = false;
     }
 
-    $('#input_baseUrl').val(url);
-
-    //$('#input_apiKey').val(apiKey);
     if (trigger) {
       this.trigger('update-swagger-ui', {url:url});
     }
@@ -20678,24 +20591,6 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
         value: value
       });
     }
-
-    if (this.model.swaggerVersion === '2.0') {
-      if ('validatorUrl' in opts.swaggerOptions) {
-
-        // Validator URL specified explicitly
-        this.model.validatorUrl = opts.swaggerOptions.validatorUrl;
-
-      } else if (this.model.url.indexOf('localhost') > 0) {
-
-        // Localhost override
-        this.model.validatorUrl = null;
-
-      } else {
-
-        // Default validator
-        this.model.validatorUrl = 'http://online.swagger.io/validator';
-      }
-    }
   },
 
   render: function(){
@@ -20703,11 +20598,6 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       for (var name in this.model.securityDefinitions) {
         var auth = this.model.securityDefinitions[name];
         var button;
-
-        if (auth.type === 'apiKey' && $('#apikey_button').length === 0) {
-          button = new SwaggerUi.Views.ApiKeyButton({model: auth, router:  this.router}).render().el;
-          $('.auth_main_container').append(button);
-        }
 
         if (auth.type === 'basicAuth' && $('#basic_auth_button').length === 0) {
           button = new SwaggerUi.Views.BasicAuthButton({model: auth, router: this.router}).render().el;

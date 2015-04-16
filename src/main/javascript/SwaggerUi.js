@@ -54,6 +54,10 @@ window.SwaggerUi = Backbone.Router.extend({
 
     // Create view to handle the header inputs
     this.headerView = new SwaggerUi.Views.HeaderView({el: $('#header')});
+
+    this.headerView.on('update-swagger-ui', function(data) {
+      return that.updateSwaggerUi(data);
+    });
   },
 
   // Set an option after initializing

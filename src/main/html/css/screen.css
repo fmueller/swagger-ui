@@ -1208,6 +1208,10 @@
   display: block;
   clear: none;
   float: right;
+  font-size: 1em;
+}
+.swagger-section #header form#api_selector label {
+  color: white;
 }
 .swagger-section #header form#api_selector .input {
   display: block;
@@ -1215,15 +1219,15 @@
   float: left;
   margin: 0 10px 0 0;
 }
-.swagger-section #header form#api_selector .input input#input_baseUrl {
+.swagger-section #header form#api_selector .input #input_baseUrl {
   width: 400px;
+  font-size: 50px;
 }
 .swagger-section #header form#api_selector .input a#explore {
   display: block;
   text-decoration: none;
   font-weight: bold;
   padding: 6px 8px;
-  font-size: 0.9em;
   color: white;
   background-color: #547f00;
   -moz-border-radius: 4px;
@@ -1237,7 +1241,6 @@
   background-color: #547f00;
 }
 .swagger-section #header form#api_selector .input input {
-  font-size: 0.9em;
   padding: 3px;
   margin: 0;
 }

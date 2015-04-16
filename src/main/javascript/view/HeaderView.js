@@ -4,11 +4,11 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
   events: {
     'click #show-pet-store-icon'    : 'showPetStore',
     'click #show-wordnik-dev-icon'  : 'showWordnikDev',
-    'click #explore'                : 'showCustom',
-    'keyup #input_baseUrl'          : 'showCustomOnKeyup'
+    'change #input_baseUrl'         : 'loadDefinition'
   },
 
-  initialize: function(){},
+  initialize: function(){
+  },
 
   showPetStore: function(){
     this.trigger('update-swagger-ui', {
@@ -22,19 +22,17 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
     });
   },
 
-  showCustomOnKeyup: function(e){
-    if (e.keyCode === 13) {
-      this.showCustom();
-    }
-  },
-
-  showCustom: function(e){
-    if (e) {
-      e.preventDefault();
-    }
-
-    this.trigger('update-swagger-ui', {
-      url: $('#input_baseUrl').val()
+  loadDefinition: function(e) {
+    var app_id = $(e.target).children(':selected').val(),
+        self = this;
+    $.getJSON(TWINTIP_BASE_URL + '/apis/' + app_id, function(def) {
+      var swaggerUrl = '/swagger.json';
+      $.getJSON(KIO_BASE_URL + '/apps/' + app_id, function(app) {
+        console.log(self);
+        self.trigger('update-swagger-ui', {
+          url: app.service_url + swaggerUrl
+        });
+      });
     });
   },
 
@@ -43,9 +41,6 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
       trigger = false;
     }
 
-    $('#input_baseUrl').val(url);
-
-    //$('#input_apiKey').val(apiKey);
     if (trigger) {
       this.trigger('update-swagger-ui', {url:url});
     }
