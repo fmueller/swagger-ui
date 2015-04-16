@@ -54,11 +54,6 @@ window.SwaggerUi = Backbone.Router.extend({
 
     // Create view to handle the header inputs
     this.headerView = new SwaggerUi.Views.HeaderView({el: $('#header')});
-
-    // Event handler for when the baseUrl/apiKey is entered by user
-    this.headerView.on('update-swagger-ui', function(data) {
-      return that.updateSwaggerUi(data);
-    });
   },
 
   // Set an option after initializing
@@ -215,11 +210,6 @@ window.SwaggerUi.Views = {};
         window.swaggerUi.api.clientAuthorizations.add.apply(window.swaggerUi.api.clientAuthorizations, arguments);
       }
     }
-  };
-
-  window.ApiKeyAuthorization = function() {
-    warn('window.ApiKeyAuthorization is deprecated. Please use SwaggerClient.ApiKeyAuthorization.');
-    SwaggerClient.ApiKeyAuthorization.apply(window, arguments);
   };
 
   window.PasswordAuthorization = function() {

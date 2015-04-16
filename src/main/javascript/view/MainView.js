@@ -61,11 +61,6 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
         var auth = this.model.securityDefinitions[name];
         var button;
 
-        if (auth.type === 'apiKey' && $('#apikey_button').length === 0) {
-          button = new SwaggerUi.Views.ApiKeyButton({model: auth, router:  this.router}).render().el;
-          $('.auth_main_container').append(button);
-        }
-
         if (auth.type === 'basicAuth' && $('#basic_auth_button').length === 0) {
           button = new SwaggerUi.Views.BasicAuthButton({model: auth, router: this.router}).render().el;
           $('.auth_main_container').append(button);
