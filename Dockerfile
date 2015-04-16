@@ -1,22 +1,15 @@
-###
-# swagger-ui-builder - https://github.com/wordnik/swagger-ui/
-# Container for building the swagger-ui static site
-#
-# Build: docker build -t swagger-ui-builder .
-# Run:   docker run -v $PWD/dist:/build/dist swagger-ui-builder
-#
-###
+FROM node:0.12.1
 
-FROM    ubuntu:14.04
-MAINTAINER dnephin@gmail.com
+RUN npm install express@4.12.3
 
-ENV     DEBIAN_FRONTEND noninteractive
+# copy resources
+COPY ./dist/ /www/dist/
+COPY ./server.js /www/
 
-RUN     apt-get update && apt-get install -y git npm nodejs openjdk-7-jre
-RUN     ln -s /usr/bin/nodejs /usr/local/bin/node
+# create env.js as user
+RUN touch /www/dist/env.js && chmod 0666 /www/dist/env.js
 
-WORKDIR /build
-ADD     package.json    /build/package.json
-RUN     npm install
-ADD     .   /build
-CMD     ./node_modules/gulp/bin/gulp.js serve
+# expose and start
+WORKDIR /www/
+CMD node server.js
+EXPOSE 8080
