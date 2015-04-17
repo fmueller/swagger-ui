@@ -26,9 +26,8 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
     var app_id = $(e.target).children(':selected').val(),
         self = this;
     $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apis/' + app_id, function(def) {
-      var swaggerUrl = '/swagger.json';
+      var swaggerUrl = def.url;
       $.getJSON(SUIENV_KIO_BASE_URL + '/apps/' + app_id, function(app) {
-        console.log(self);
         self.trigger('update-swagger-ui', {
           url: app.service_url + swaggerUrl
         });
