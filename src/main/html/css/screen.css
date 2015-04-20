@@ -1221,7 +1221,7 @@
 }
 .swagger-section #header form#api_selector .input #input_baseUrl {
   width: 400px;
-  font-size: 50px;
+  font-size: 16px;
 }
 .swagger-section #header form#api_selector .input input {
   padding: 3px;

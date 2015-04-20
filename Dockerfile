@@ -4,6 +4,7 @@ RUN npm install express@4.12.3
 
 # copy resources
 COPY ./dist/ /www/dist/
+COPY ./dist/index.html /www/
 COPY ./server.js /www/
 
 # create env.js as user

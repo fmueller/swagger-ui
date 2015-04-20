@@ -1,7 +1,7 @@
 var express = require('express'),
     server = express(),
-    fs = require('fs');
-
+    fs = require('fs'),
+    index = fs.readFileSync('./index.html');
 server.use('/dist', express.static('dist'));
 
 function generateEnv() {
@@ -27,7 +27,10 @@ writeEnv();
 
 // redirect to index.html
 server.get('/*', function(req, res) {
-    res.redirect(301, '/dist/');
+    res
+        .append('Content-Type', 'text/html')
+        .status(200)
+        .send(index);
 });
 
 server.listen(8080);
