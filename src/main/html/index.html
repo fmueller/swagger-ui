@@ -17,6 +17,11 @@
   <script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
   <script src='lib/underscore-min.js' type='text/javascript'></script>
   <script src='lib/backbone-min.js' type='text/javascript'></script>
+  <script src='lib/oauth2-client-js.js'></script>
+  <script>
+    window.SUIENV_TWINTIP_BASE_URL='https://twintip.stups.zalan.do';
+    window.SUIENV_KIO_BASE_URL='https://kio.stups.zalan.do';
+  </script>
   <script src='swagger-ui.js' type='text/javascript'></script>
   <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
   <script src='lib/marked.js' type='text/javascript'></script>
@@ -35,6 +40,31 @@
         url = decodeURIComponent(url[1]);
       } else {
         url = SUIENV_TWINTIP_BASE_URL + '/swagger.json';
+      }
+
+      window.OAuthProvider = new window['oauth2-client-js'].Provider({
+        id: 'swagger',
+        authorization_url: window.SUIENV_OAUTH_AUTH_URL
+      });
+      // check if we can parse the url fragment
+      var response;
+      try {
+        response = OAuthProvider.parse(window.location.hash);
+      } catch(err) {
+        // nope.
+        if (response instanceof Error) {
+          return console.error(response);
+        }
+        // do we have a token already?
+        if (!OAuthProvider.hasAccessToken()) {
+          // if not we certainly need one
+          var request = new window['oauth2-client-js'].Request({
+            client_id: window.SUIENV_OAUTH_CLIENT_ID,
+            redirect_uri: window.SUIENV_OAUTH_REDIRECT_URL
+          });
+          OAuthProvider.remember(request);
+          window.location.href = OAuthProvider.requestToken(request);
+        }
       }
 
       // just wrap this part also in a function
@@ -64,7 +94,7 @@
           sorter : "alpha"
         });
         window.swaggerUi.load();
-      });
+      }
 
       function addApiKeyAuthorization(){
         var key = encodeURIComponent($('#input_apiKey')[0].value);
@@ -93,13 +123,13 @@
       var first = apis[0];
 
       $.getJSON(SUIENV_KIO_BASE_URL + '/apps/' + first.application_id, function(app) {
-        $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apis/' + first.application_id, function(api) {
+        $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id, function(api) {
           initSwagger(app.service_url + api.url);
         });
       });
     }
 
-    $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apis', function(apis) {
+    $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apps', function(apis) {
       var usableApis = apis
                         .filter(function(api) {
                           return api.status === 'SUCCESS';
@@ -107,7 +137,6 @@
       populateApisInSelectbox(usableApis);
       initWithFirstOf(usableApis);
     });
-      
   });
   </script>
 </head>
