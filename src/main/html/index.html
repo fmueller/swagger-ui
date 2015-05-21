@@ -3,25 +3,27 @@
 <head>
   <title>Swagger UI</title>
 
-  <link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32" />
-  <link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16" />
-  <link href='css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
-  <link href='css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
-  <link href='css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
-  <link href='css/reset.css' media='print' rel='stylesheet' type='text/css'/>
-  <link href='css/print.css' media='print' rel='stylesheet' type='text/css'/>
-  <script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
-  <script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
-  <script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
-  <script src='lib/underscore-min.js' type='text/javascript'></script>
-  <script src='lib/backbone-min.js' type='text/javascript'></script>
-  <script src='lib/oauth2-client.js'></script>
-  <script src='swagger-ui.js' type='text/javascript'></script>
-  <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
-  <script src='lib/marked.js' type='text/javascript'></script>
-  <script src='lib/swagger-oauth.js' type='text/javascript'></script>
+  <!-- remove env and /dist/ path for development -->
+  <script src="/dist/env.js"></script>
+  <link rel="icon" type="image/png" href="/dist/images/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="/dist/images/favicon-16x16.png" sizes="16x16" />
+  <link href='/dist/css/typography.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/dist/css/reset.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/dist/css/screen.css' media='screen' rel='stylesheet' type='text/css'/>
+  <link href='/dist/css/reset.css' media='print' rel='stylesheet' type='text/css'/>
+  <link href='/dist/css/print.css' media='print' rel='stylesheet' type='text/css'/>
+  <script src='/dist/lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+  <script src='/dist/lib/jquery.slideto.min.js' type='text/javascript'></script>
+  <script src='/dist/lib/jquery.wiggle.min.js' type='text/javascript'></script>
+  <script src='/dist/lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+  <script src='/dist/lib/handlebars-2.0.0.js' type='text/javascript'></script>
+  <script src='/dist/lib/underscore-min.js' type='text/javascript'></script>
+  <script src='/dist/lib/backbone-min.js' type='text/javascript'></script>
+  <script src='/dist/lib/oauth2-client.js'></script>
+  <script src='/dist/swagger-ui.js' type='text/javascript'></script>
+  <script src='/dist/lib/highlight.7.3.pack.js' type='text/javascript'></script>
+  <script src='/dist/lib/marked.js' type='text/javascript'></script>
+  <script src='/dist/lib/swagger-oauth.js' type='text/javascript'></script>
 
   <script type="text/javascript">
     $(function () {
@@ -35,7 +37,7 @@
       if (url && url.length > 1) {
         url = decodeURIComponent(url[1]);
       } else {
-        url = SUIENV_TWINTIP_BASE_URL + '/swagger.json';
+        url = window.SUIENV_TWINTIP_BASE_URL + '/swagger.json';
       }
 
       window.OAuthProvider = new window['oauth2-client-js'].Provider({
@@ -119,19 +121,19 @@
 
     function initWithFirstOf(apis) {
       if (!apis.length) {
-        return initSwagger(SUIENV_TWINTIP_BASE_URL + '/swagger.json');
+        return initSwagger(window.SUIENV_TWINTIP_BASE_URL + '/swagger.json');
       }
       var first = apis[0];
 
       $.ajax({
-        url: SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
+        url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
         type: 'GET',
         dataType: 'json',
         beforeSend: setOAuthHeader,
         error: console.error.bind(console),
         success: function(app) {
           $.ajax({
-            url: SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
+            url: window.SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
             type: 'GET',
             dataType: 'json',
             beforeSend: setOAuthHeader,
@@ -145,7 +147,7 @@
     }
 
     $.ajax({
-      url: SUIENV_TWINTIP_BASE_URL + '/apps',
+      url: window.SUIENV_TWINTIP_BASE_URL + '/apps',
       type: 'GET',
       dataType: 'json',
       beforeSend: setOAuthHeader,

@@ -3,7 +3,6 @@ var express = require('express'),
     fs = require('fs'),
     path = require('path'),
     index = fs.readFileSync('./index.html');
-server.use('/dist', express.static('dist'));
 
 function generateEnv() {
     var env = '';
@@ -30,6 +29,9 @@ function writeEnv() {
 }
 
 writeEnv();
+setInterval(writeEnv, 1000 * 60 * 60);
+
+server.use('/dist', express.static('dist'));
 
 // redirect to index.html
 server.get('/*', function(req, res) {
