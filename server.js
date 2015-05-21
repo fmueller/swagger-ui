@@ -16,7 +16,7 @@ function generateEnv() {
     // read client configuration from mint
     if (process.env.CREDENTIALS_DIR) {
         var clientConfig = JSON.parse(fs.readFileSync(path.join(process.env.CREDENTIALS_DIR, 'client.json')));
-        env += 'SUIENV_OAUTH_CLIENT_ID=' + clientConfig.client_id;
+        env += 'SUIENV_OAUTH_CLIENT_ID="' + clientConfig.client_id + '";\n';
     }
     return env;
 }
