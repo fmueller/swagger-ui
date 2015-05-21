@@ -17,11 +17,7 @@
   <script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
   <script src='lib/underscore-min.js' type='text/javascript'></script>
   <script src='lib/backbone-min.js' type='text/javascript'></script>
-  <script src='lib/oauth2-client-js.js'></script>
-  <script>
-    window.SUIENV_TWINTIP_BASE_URL='https://twintip.stups.zalan.do';
-    window.SUIENV_KIO_BASE_URL='https://kio.stups.zalan.do';
-  </script>
+  <script src='lib/oauth2-client.js'></script>
   <script src='swagger-ui.js' type='text/javascript'></script>
   <script src='lib/highlight.7.3.pack.js' type='text/javascript'></script>
   <script src='lib/marked.js' type='text/javascript'></script>
@@ -60,10 +56,13 @@
           // if not we certainly need one
           var request = new window['oauth2-client-js'].Request({
             client_id: window.SUIENV_OAUTH_CLIENT_ID,
-            redirect_uri: window.SUIENV_OAUTH_REDIRECT_URL
+            redirect_uri: window.SUIENV_OAUTH_REDIRECT_URL,
+            scopes: window.SUIENV_OAUTH_SCOPES,
           });
           OAuthProvider.remember(request);
           window.location.href = OAuthProvider.requestToken(request);
+        } else {
+          //TODO check if token is still valid
         }
       }
 
@@ -75,13 +74,11 @@
           supportedSubmitMethods: ['get', 'post', 'put', 'delete', 'patch'],
           onComplete: function(swaggerApi, swaggerUi){
             if(typeof initOAuth == "function") {
-              /*
               initOAuth({
-                clientId: "your-client-id",
-                realm: "your-realms",
-                appName: "your-app-name"
+                clientId: window.SUIENV_OAUTH_CLIENT_ID,
+                realm: window.SUIENV_OAUTH_REALM,
+                appName: 'swagger'
               });
-              */
             }
             $('pre code').each(function(i, e) {
               hljs.highlightBlock(e)
@@ -116,26 +113,51 @@
       });
     }
 
+    function setOAuthHeader(xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + OAuthProvider.getAccessToken());
+    }
+
     function initWithFirstOf(apis) {
       if (!apis.length) {
         return initSwagger(SUIENV_TWINTIP_BASE_URL + '/swagger.json');
       }
       var first = apis[0];
 
-      $.getJSON(SUIENV_KIO_BASE_URL + '/apps/' + first.application_id, function(app) {
-        $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id, function(api) {
-          initSwagger(app.service_url + api.url);
-        });
+      $.ajax({
+        url: SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: setOAuthHeader,
+        error: console.error.bind(console),
+        success: function(app) {
+          $.ajax({
+            url: SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
+            type: 'GET',
+            dataType: 'json',
+            beforeSend: setOAuthHeader,
+            error: console.error.bind(console),
+            success: function(api) {
+              initSwagger(app.service_url + api.url);  
+            }
+          });
+        }
       });
     }
 
-    $.getJSON(SUIENV_TWINTIP_BASE_URL + '/apps', function(apis) {
-      var usableApis = apis
+    $.ajax({
+      url: SUIENV_TWINTIP_BASE_URL + '/apps',
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: setOAuthHeader,
+      error: console.error.bind(console),
+      success: function(apis) {
+        var usableApis = apis
                         .filter(function(api) {
                           return api.status === 'SUCCESS';
                         });
-      populateApisInSelectbox(usableApis);
-      initWithFirstOf(usableApis);
+        populateApisInSelectbox(usableApis);
+        initWithFirstOf(usableApis);
+      }
     });
   });
   </script>
