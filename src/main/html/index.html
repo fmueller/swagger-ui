@@ -65,18 +65,6 @@
         window.location.href = OAuthProvider.requestToken(request);
       }
 
-      // check if we can parse the url fragment
-      var response;
-      try {
-        if (window.location.hash.length) {
-          response = OAuthProvider.parse(window.location.hash);
-        }
-      } catch(err) {
-        // nope.
-        if (response instanceof Error) {
-          return console.error(response);
-        }
-      }
       // do we have a token already?
       if (!OAuthProvider.hasAccessToken()) {
         // if not we certainly need one
@@ -89,6 +77,19 @@
           dataType: 'json',
           error: requestToken // get new token if tokeninfo returns error
         });
+      }
+
+      // check if we can parse the url fragment
+      var response;
+      try {
+        if (window.location.hash.length) {
+          response = OAuthProvider.parse(window.location.hash);
+        }
+      } catch(err) {
+        // nope.
+        if (response instanceof Error) {
+          return console.error(response);
+        }
       }
 
       // just wrap this part also in a function
