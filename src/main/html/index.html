@@ -123,27 +123,23 @@
       if (!apis.length) {
         return initSwagger(window.SUIENV_TWINTIP_BASE_URL + '/swagger.json');
       }
-      var first = apis[0];
-
-      $.ajax({
-        url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
-        type: 'GET',
-        dataType: 'json',
-        beforeSend: setOAuthHeader,
-        error: console.error.bind(console),
-        success: function(app) {
-          $.ajax({
-            url: window.SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: setOAuthHeader,
-            error: console.error.bind(console),
-            success: function(api) {
-              initSwagger(app.service_url + api.url);  
-            }
-          });
-        }
-      });
+      var first = apis[0],
+          swaggerUrl = first.url,
+          isRelativeUrl = swaggerUrl[0] === '/';
+      if (isRelativeUrl) {
+        $.ajax({
+          url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
+          type: 'GET',
+          dataType: 'json',
+          beforeSend: setOAuthHeader,
+          error: console.error.bind(console),
+          success: function(app) {
+            initSwagger(app.service_url + swaggerUrl);
+          }
+        });
+      } else {
+        initSwagger(swaggerUrl);
+      }
     }
 
     $.ajax({
@@ -156,6 +152,13 @@
         var usableApis = apis
                         .filter(function(api) {
                           return api.status === 'SUCCESS';
+                        })
+                        .sort(function(a, b) {
+                          var an = a.name.toLowerCase(),
+                              bn = b.name.toLowerCase();
+                          return an < bn ? -1 :
+                                  bn < an ? 1 :
+                                    0;
                         });
         populateApisInSelectbox(usableApis);
         initWithFirstOf(usableApis);

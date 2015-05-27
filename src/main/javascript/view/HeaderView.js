@@ -37,19 +37,27 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
         beforeSend: setOAuthHeader,
         error: console.error.bind(console),
         success: function(def) {
-          var swaggerUrl = def.url;
-          $.ajax({
-            url: window.SUIENV_KIO_BASE_URL + '/apps/' + app_id,
-            type: 'GET',
-            dataType: 'json',
-            beforeSend: setOAuthHeader,
-            error: console.error.bind(console),
-            success: function(app) {
-              self.trigger('update-swagger-ui', {
-                url: app.service_url + swaggerUrl
-              });
-            }
-        });
+          var swaggerUrl = def.url,
+              isRelativeUrl = swaggerUrl[0] === '/';
+          if (isRelativeUrl) {
+            // go to kio for serviceurl
+            $.ajax({
+              url: window.SUIENV_KIO_BASE_URL + '/apps/' + app_id,
+              type: 'GET',
+              dataType: 'json',
+              beforeSend: setOAuthHeader,
+              error: console.error.bind(console),
+              success: function(app) {
+                self.trigger('update-swagger-ui', {
+                  url: app.service_url + swaggerUrl
+                });
+              }
+            });
+          } else {
+            self.trigger('update-swagger-ui', {
+              url: swaggerUrl
+            });
+          }
       }
     });
   },
