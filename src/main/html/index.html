@@ -123,23 +123,32 @@
       if (!apis.length) {
         return initSwagger(window.SUIENV_TWINTIP_BASE_URL + '/swagger.json');
       }
-      var first = apis[0],
-          swaggerUrl = first.url,
-          isRelativeUrl = swaggerUrl[0] === '/';
-      if (isRelativeUrl) {
-        $.ajax({
-          url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
-          type: 'GET',
-          dataType: 'json',
-          beforeSend: setOAuthHeader,
-          error: console.error.bind(console),
-          success: function(app) {
-            initSwagger(app.service_url + swaggerUrl);
+      var first = apis[0];
+      $.ajax({
+        url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: setOAuthHeader,
+        error: console.error.bind(console),
+        success: function(app) {
+          var swaggerUrl = app.url,
+              isRelativeUrl = swaggerUrl[0] === '/';
+          if (isRelativeUrl) {
+            $.ajax({
+              url: window.SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
+              type: 'GET',
+              dataType: 'json',
+              beforeSend: setOAuthHeader,
+              error: console.error.bind(console),
+              success: function(api) {
+                initSwagger(app.service_url + api.url);  
+              }
+            });
+          } else {
+            initSwagger(swaggerUrl);
           }
-        });
-      } else {
-        initSwagger(swaggerUrl);
-      }
+        }
+      });
     }
 
     $.ajax({
