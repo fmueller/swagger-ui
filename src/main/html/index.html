@@ -125,23 +125,23 @@
       }
       var first = apis[0];
       $.ajax({
-        url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
+        url: window.SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
         type: 'GET',
         dataType: 'json',
         beforeSend: setOAuthHeader,
         error: console.error.bind(console),
-        success: function(app) {
-          var swaggerUrl = app.url,
+        success: function(api) {
+          var swaggerUrl = api.url,
               isRelativeUrl = swaggerUrl[0] === '/';
           if (isRelativeUrl) {
             $.ajax({
-              url: window.SUIENV_TWINTIP_BASE_URL + '/apps/' + first.application_id,
+              url: window.SUIENV_KIO_BASE_URL + '/apps/' + first.application_id,
               type: 'GET',
               dataType: 'json',
               beforeSend: setOAuthHeader,
               error: console.error.bind(console),
-              success: function(api) {
-                initSwagger(app.service_url + api.url);  
+              success: function(app) {
+                initSwagger(app.service_url + swaggerUrl);  
               }
             });
           } else {

@@ -36,8 +36,8 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
         dataType: 'json',
         beforeSend: setOAuthHeader,
         error: console.error.bind(console),
-        success: function(def) {
-          var swaggerUrl = def.url,
+        success: function(api) {
+          var swaggerUrl = api.url,
               isRelativeUrl = swaggerUrl[0] === '/';
           if (isRelativeUrl) {
             // go to kio for serviceurl
