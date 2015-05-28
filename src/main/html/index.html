@@ -85,7 +85,7 @@
       } else {
         // check validity of token
         $.ajax({
-          url: window.SUIENV_OAUTH_TOKENINFO_URL + '?access_token=' + OAuthProvider.getAccessToken(),
+          url: '/tokeninfo?access_token=' + OAuthProvider.getAccessToken(),
           type: 'GET',
           dataType: 'json',
           error: function() {

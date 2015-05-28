@@ -1,6 +1,8 @@
 FROM node:0.12.1
 
+RUN npm install superagent@1.2.0
 RUN npm install express@4.12.3
+RUN npm install winston@1.0.0
 
 # copy resources
 COPY ./dist/ /www/dist/
