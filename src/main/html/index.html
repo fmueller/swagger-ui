@@ -3,7 +3,7 @@
 <head>
   <title>Swagger UI</title>
 
-  <!-- remove env and /dist/ path for development 
+  <!-- remove env and /dist/ path for development
   <script>
     SUIENV_OAUTH_SCOPES='uid';
     SUIENV_OAUTH_REALM='employees';
@@ -12,8 +12,8 @@
     SUIENV_OAUTH_REDIRECT_URL='http://localhost:8080';
     SUIENV_KIO_BASE_URL='http://localhost:5000';
     SUIENV_TWINTIP_BASE_URL='http://localhost:5001';
-    SUIENV_OAUTH_TOKENINFO_URL='http://localhost:5006';
-  </script>-->
+    SUIENV_OAUTH_TOKENINFO_URL='http://localhost:5006/tokeninfo';
+  </script> -->
   <script src="/dist/env.js"></script>
   <link rel="icon" type="image/png" href="/dist/images/favicon-32x32.png" sizes="32x32" />
   <link rel="icon" type="image/png" href="/dist/images/favicon-16x16.png" sizes="16x16" />
@@ -67,29 +67,32 @@
 
       // do we have a token already?
       if (!OAuthProvider.hasAccessToken()) {
-        // if not we certainly need one
-        requestToken();
+        // do we have a response from auth server?
+        // check if we can parse the url fragment
+        if (window.location.hash.length) {
+          var response;
+          try {
+            response = OAuthProvider.parse(window.location.hash);
+          } catch(err) {
+            if (response instanceof Error) {
+              return console.error(response);
+            }
+          }
+        } else {
+          // if not we certainly need one
+          requestToken();
+        }
       } else {
         // check validity of token
         $.ajax({
           url: window.SUIENV_OAUTH_TOKENINFO_URL + '?access_token=' + OAuthProvider.getAccessToken(),
           type: 'GET',
           dataType: 'json',
-          error: requestToken // get new token if tokeninfo returns error
+          error: function() {
+            console.error(arguments);
+            requestToken(); // get new token if tokeninfo returns error
+          }
         });
-      }
-
-      // check if we can parse the url fragment
-      var response;
-      try {
-        if (window.location.hash.length) {
-          response = OAuthProvider.parse(window.location.hash);
-        }
-      } catch(err) {
-        // nope.
-        if (response instanceof Error) {
-          return console.error(response);
-        }
       }
 
       // just wrap this part also in a function
