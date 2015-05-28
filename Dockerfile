@@ -4,6 +4,9 @@ RUN npm install superagent@1.2.0
 RUN npm install express@4.12.3
 RUN npm install winston@1.0.0
 
+# add scm-source
+ADD /scm-source.json /scm-source.json
+
 # copy resources
 COPY ./dist/ /www/dist/
 COPY ./dist/index.html /www/

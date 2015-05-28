@@ -2,6 +2,7 @@
 
 var gulp = require('gulp');
 var es = require('event-stream');
+var fs = require('fs');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
@@ -16,6 +17,7 @@ var header = require('gulp-header');
 var pkg = require('./package.json');
 var order = require('gulp-order');
 var jshint = require('gulp-jshint');
+var scm = require('node-scm-source');
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -98,6 +100,15 @@ gulp.task('less', ['clean'], function() {
     .on('error', log)
     .pipe(gulp.dest('./src/main/html/css/'))
     .pipe(connect.reload());
+});
+
+/**
+ * Generate scm-source.json
+ */
+gulp.task('scm-source', function(done) {
+  fs.writeFile('scm-source.json', JSON.stringify(scm(), null, 4), function() {
+    done();
+  });
 });
 
 

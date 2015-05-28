@@ -13,3 +13,4 @@ node_modules/*
 /nbproject/private/
 dist
 *.sublime-project
+scm-source.json
