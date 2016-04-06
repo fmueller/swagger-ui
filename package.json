@@ -18,7 +18,8 @@
     "prejshint": "gulp",
     "jshint": "jshint .",
     "pretest": "npm run jshint",
-    "test": "mocha"
+    "test": "echo \"use npm run mocha for tests\" && exit 0",
+    "mocha": "mocha"
   },
   "repository": {
     "type": "git",

@@ -13,8 +13,9 @@ winston.add(winston.transports.Console, {
 });
 
 function generateEnv() {
+    'use strict';
     var env = '';
-    for( key in process.env ) {
+    for(var key in process.env ) {
         if (process.env.hasOwnProperty(key)) {
             if (key.indexOf( 'SUIENV_' ) === 0 ) {
                 env += '' + key + '="' + process.env[key] + '";\n';
@@ -30,6 +31,7 @@ function generateEnv() {
 }
 
 function writeEnv() {
+    'use strict';
     var env = generateEnv();
     fs.writeFileSync('dist/env.js', env );
     winston.info('Successfully updated OAuth credentials.');
@@ -42,6 +44,7 @@ server.use('/dist', express.static('dist'));
 
 // tunnel tokeninfo
 server.get('/tokeninfo', function(req, res) {
+    'use strict';
     request
         .get(process.env.SUIENV_OAUTH_TOKENINFO_URL)
         .accept('json')
@@ -66,6 +69,7 @@ server.get('/tokeninfo', function(req, res) {
 
 // redirect to index.html
 server.get('/*', function(req, res) {
+    'use strict';
     res
         .append('Content-Type', 'text/html')
         .status(200)
