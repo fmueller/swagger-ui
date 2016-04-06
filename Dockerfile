@@ -10,12 +10,12 @@ COPY ./server/server.js /www/
 COPY ./server/package.json /www/
 
 # install dependencies
-RUN npm install
 
 # create env.js as user
 RUN touch /www/dist/env.js && chmod 0666 /www/dist/env.js
 
 # expose and start
 WORKDIR /www/
+RUN npm install
 CMD node server.js
 EXPOSE 8080
