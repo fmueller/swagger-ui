@@ -131,7 +131,7 @@
 
     function populateApisInSelectbox(apis) {
       var $select = $('#input_baseUrl');
-      
+
       apis.forEach(function(api) {
         var $option = $('<option />');
         $option.attr('value', api.application_id);
@@ -166,7 +166,7 @@
               beforeSend: setOAuthHeader,
               error: console.error.bind(console),
               success: function(app) {
-                initSwagger(app.service_url + swaggerUrl);  
+                initSwagger(app.service_url + swaggerUrl);
               }
             });
           } else {
