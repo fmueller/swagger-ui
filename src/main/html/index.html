@@ -188,8 +188,8 @@
                           return api.status === 'SUCCESS';
                         })
                         .sort(function(a, b) {
-                          var an = a.name.toLowerCase(),
-                              bn = b.name.toLowerCase();
+                          var an = (a.name || a.application_id).toLowerCase(),
+                              bn = (b.name || b.application_id).toLowerCase();
                           return an < bn ? -1 :
                                   bn < an ? 1 :
                                     0;
