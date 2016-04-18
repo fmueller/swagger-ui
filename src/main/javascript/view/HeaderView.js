@@ -27,7 +27,12 @@ SwaggerUi.Views.HeaderView = Backbone.View.extend({
         self = this;
 
     function setOAuthHeader(xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + window.OAuthProvider.getAccessToken());
+      var bearerHeader = 'Bearer ' + window.OAuthProvider.getAccessToken();
+      if (window.swaggerUi && window.swaggerUi.api) {
+        window.swaggerUi.api.clientAuthorizations.add('myoauth2',
+            new SwaggerClient.ApiKeyAuthorization('Authorization', bearerHeader, 'header'));
+      }
+      xhr.setRequestHeader('Authorization', bearerHeader);
     }
 
     $.ajax({
