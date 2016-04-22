@@ -141,7 +141,12 @@
     }
 
     function setOAuthHeader(xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + OAuthProvider.getAccessToken());
+      var bearerHeader = 'Bearer ' + OAuthProvider.getAccessToken();
+      if (window.swaggerUi && window.swaggerUi.api) {
+        window.swaggerUi.api.clientAuthorizations.add('myoauth2',
+            new SwaggerClient.ApiKeyAuthorization('Authorization', bearerHeader, 'header'));
+      }
+      xhr.setRequestHeader('Authorization', bearerHeader);
     }
 
     function initWithFirstOf(apis) {
