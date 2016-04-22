@@ -1,7 +1,6 @@
 docker run \
     -it \
     -p 8080:8080 \
-    -e SUIENV_KIO_BASE_URL=http://localhost:5000 \
     -e SUIENV_TWINTIP_BASE_URL=http://localhost:5001 \
     -e SUIENV_OAUTH_REALM=realm \
     -e SUIENV_OAUTH_CLIENT_ID=swagger \
