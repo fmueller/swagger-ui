@@ -135,7 +135,7 @@
       apis.forEach(function(api) {
         var $option = $('<option />');
         $option.attr('value', api.application_id);
-        $option.text(api.name);
+        $option.text(api.name + ' (' + api.application_id + ')');
         $select.append($option);
       });
     }
